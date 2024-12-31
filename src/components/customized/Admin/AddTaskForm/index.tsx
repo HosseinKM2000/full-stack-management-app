@@ -17,36 +17,16 @@ import {
 } from "@chakra-ui/react";
 import style from "./index.module.css";
 import { Formik } from "formik";
+import { addTask } from "<store>/utils/validation/admin";
+import { formValueType } from "<store>/types/admin";
+import { setSubmittingType } from "<store>/types/global";
 
 const AddTaskForm = () => {
   return (
     <Formik
       initialValues={{ title: "", description: "", userId: "" }}
-      validate={(values) => {
-        const errors: {
-          title?: string;
-          description?: string;
-          userId?: string;
-        } = {};
-        if (!values.title) {
-          errors.title = "Title is Required !";
-        } else if (values.title.length === 0) {
-          errors.title = "Please Enter a Title !";
-        } else if (!values.description) {
-          errors.description = "Please Enter a Description !";
-        } else if (values.description.length === 0) {
-          errors.description = "Please Enter a Description !";
-        } else if (!values.userId) {
-          errors.userId = "Please Enter a userId !";
-        }
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          setSubmitting(false);
-        }, 1000);
-        console.log(values);
-      }}
+      validate={addTask}
+      onSubmit={onSubmit}
     >
       {({
         values,
@@ -145,4 +125,13 @@ const frameworks = createListCollection({
   ],
 });
 
+const onSubmit = (
+  values: formValueType,
+  { setSubmitting }: { setSubmitting: setSubmittingType }
+) => {
+  setTimeout(() => {
+    setSubmitting(false);
+  }, 1000);
+  console.log(values);
+};
 export default AddTaskForm;
