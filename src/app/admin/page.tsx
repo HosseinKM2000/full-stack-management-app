@@ -1,4 +1,8 @@
+"use client"
 
 export default function Post() {
-  return <h1>admin page</h1>;
+  return (
+    <div>
+    </div>
+  );
 }

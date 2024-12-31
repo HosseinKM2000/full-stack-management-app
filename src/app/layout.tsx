@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Breadcrumb from "<store>/components/customized/Breadcrumb";
 import { Provider } from "<store>/components/ui/provider";
 
 const geistSans = Geist({
@@ -26,7 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Provider> {children}</Provider>
+        <Provider>
+          {" "}
+          <Breadcrumb />
+          {children}
+        </Provider>
       </body>
     </html>
   );
