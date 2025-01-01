@@ -18,7 +18,7 @@ import {
 import style from "./index.module.css";
 import { Formik } from "formik";
 import { addTask } from "<store>/utils/validation/admin";
-import { formValueType } from "<store>/types/admin";
+import { taskFormValueType } from "<store>/types/admin";
 import { setSubmittingType } from "<store>/types/global";
 
 const AddTaskForm = () => {
@@ -126,7 +126,7 @@ const frameworks = createListCollection({
 });
 
 const onSubmit = (
-  values: formValueType,
+  values: taskFormValueType,
   { setSubmitting }: { setSubmitting: setSubmittingType }
 ) => {
   setTimeout(() => {

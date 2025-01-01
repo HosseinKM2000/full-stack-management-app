@@ -1,6 +1,7 @@
 import { Tabs } from "@chakra-ui/react";
 import { LuFolder, LuUser } from "react-icons/lu";
 import AddTaskForm from "../AddTaskForm";
+import AddMemberForm from "../AddMemberForm";
 
 const AdminTabs = () => {
   return (
@@ -20,7 +21,9 @@ const AdminTabs = () => {
           Add Task
         </Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="members">Manage your team members</Tabs.Content>
+      <Tabs.Content value="members">
+        <AddMemberForm />
+      </Tabs.Content>
       <Tabs.Content value="add-task">
         <AddTaskForm />
       </Tabs.Content>
