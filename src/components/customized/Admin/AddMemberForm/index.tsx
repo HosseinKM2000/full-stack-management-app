@@ -106,6 +106,7 @@ const onSubmit = async (
       body: JSON.stringify(values),
     });
     const result = await response.json();
+    alert("member added successfully")
     console.log(result);
   } catch (error) {
     console.log(error);

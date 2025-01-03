@@ -6,6 +6,9 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "<store>/components/ui/select";
+import { memberFormValueType, taskFormValueType } from "<store>/types/admin";
+import { setSubmittingType } from "<store>/types/global";
+import { addTask } from "<store>/utils/validation/admin";
 import {
   Button,
   createListCollection,
@@ -15,13 +18,49 @@ import {
   StatRoot,
   Textarea,
 } from "@chakra-ui/react";
-import style from "./index.module.css";
 import { Formik } from "formik";
-import { addTask } from "<store>/utils/validation/admin";
-import { taskFormValueType } from "<store>/types/admin";
-import { setSubmittingType } from "<store>/types/global";
+import { useEffect, useState } from "react";
+import style from "./index.module.css";
 
 const AddTaskForm = () => {
+  const [members, setMembers] = useState<{ label: string; value: string }[]>(
+    []
+  );
+  const [loading, setLoading] = useState(true);
+
+  // Fetch members on component mount
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const response = await fetch("/api/members");
+        if (!response.ok) {
+          throw new Error("Failed to fetch members");
+        }
+        const data = await response.json();
+        const formattedMembers = data.map((member: memberFormValueType) => ({
+          label: member.userName,
+          value: member.id,
+        }));
+        setMembers(formattedMembers);
+      } catch (error) {
+        console.error("Error fetching members:", error);
+        setMembers([]); // Fallback to an empty list in case of error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
+  const memberCollection = createListCollection({
+    items: members,
+  });
+
+  if (loading) {
+    return <p>Loading ...</p>;
+  }
+
   return (
     <Formik
       initialValues={{ title: "", description: "", userId: "" }}
@@ -40,7 +79,6 @@ const AddTaskForm = () => {
           <Stack gap="4">
             <StatRoot>
               <StatLabel color={"yellow.400"}>
-                {" "}
                 {errors.title && touched.title && errors.title}
               </StatLabel>
             </StatRoot>
@@ -56,7 +94,6 @@ const AddTaskForm = () => {
 
             <StatRoot>
               <StatLabel color={"yellow.400"}>
-                {" "}
                 {errors.description &&
                   touched.description &&
                   errors.description}
@@ -74,12 +111,11 @@ const AddTaskForm = () => {
             />
             <StatRoot>
               <StatLabel color={"yellow.400"}>
-                {" "}
                 {errors.userId && touched.userId && errors.userId}
               </StatLabel>
             </StatRoot>
             <SelectRoot
-              collection={frameworks}
+              collection={memberCollection}
               size="lg"
               width="100%"
               name="userId"
@@ -92,9 +128,9 @@ const AddTaskForm = () => {
                 />
               </SelectTrigger>
               <SelectContent className={style.input_padding}>
-                {frameworks.items.map((movie) => (
-                  <SelectItem item={movie} key={movie.value}>
-                    {movie.label}
+                {memberCollection.items.map((member) => (
+                  <SelectItem item={member} key={member.value}>
+                    {member.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -116,15 +152,6 @@ const AddTaskForm = () => {
   );
 };
 
-const frameworks = createListCollection({
-  items: [
-    { label: "React.js", value: "react" },
-    { label: "Vue.js", value: "vue" },
-    { label: "Angular", value: "angular" },
-    { label: "Svelte", value: "svelte" },
-  ],
-});
-
 const onSubmit = (
   values: taskFormValueType,
   { setSubmitting }: { setSubmitting: setSubmittingType }
@@ -134,4 +161,5 @@ const onSubmit = (
   }, 1000);
   console.log(values);
 };
+
 export default AddTaskForm;
