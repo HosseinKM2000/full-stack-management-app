@@ -1,12 +1,15 @@
 "use client";
 import { Field } from "<components>/ui/field";
 import { setSubmittingType } from "<store>/types/global";
+import { useStore } from "<store>/utils/store";
 import { searchMember } from "<store>/utils/validation/admin";
 import { Button, Input, Stack } from "@chakra-ui/react";
 import { Formik } from "formik";
 import { RiArrowRightLine } from "react-icons/ri";
 
 const Filter = () => {
+  const updateMembers = useStore((state) => state.updateMembers);
+
   const onSubmit = async (
     values: { text: string },
     { setSubmitting }: { setSubmitting: setSubmittingType }
@@ -14,7 +17,15 @@ const Filter = () => {
     setTimeout(() => {
       setSubmitting(false);
     }, 1000);
+    try {
+      const response = await fetch(`/api/members?username=${values.text}`);
+      const result = await response.json();
+      updateMembers(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <Formik
       initialValues={{ text: "" }}
@@ -44,7 +55,7 @@ const Filter = () => {
             </Field>
             <Button
               type="submit"
-              colorPalette="teal"
+              colorPalette="blue"
               variant="outline"
               disabled={isSubmitting}
             >

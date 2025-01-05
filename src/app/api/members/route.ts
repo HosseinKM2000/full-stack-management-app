@@ -3,10 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const members = await prisma.member.findMany();
+    const { searchParams } = req.nextUrl;
+    const username = searchParams.get("username");
+
+    const members = await prisma.member.findMany({
+      where: username ? { userName: { contains: username } } : {},
+    });
     return NextResponse.json(members, { status: 200 });
+
   } catch (error) {
     return NextResponse.json(error, { status: 500 });
   }
