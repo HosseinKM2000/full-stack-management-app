@@ -1,4 +1,4 @@
-import { memberFormValueType } from "<store>/types/admin";
+import { memberFormValueType } from "<store>/utils/types/admin";
 import { create } from "zustand";
 
 type State = {
@@ -15,3 +15,4 @@ const useStore = create<State & Action>((set) => ({
 }));
 
 export { useStore };
+

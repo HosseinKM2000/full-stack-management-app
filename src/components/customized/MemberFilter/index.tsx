@@ -1,7 +1,7 @@
 "use client";
 import { Field } from "<components>/ui/field";
-import { setSubmittingType } from "<store>/types/global";
 import { useStore } from "<store>/utils/store";
+import { setSubmittingType } from "<store>/utils/types/global";
 import { searchMember } from "<store>/utils/validation/admin";
 import { Button, Input, Stack } from "@chakra-ui/react";
 import { Formik } from "formik";

@@ -1,4 +1,4 @@
-import { memberFormValueType, taskFormValueType } from "<store>/types/admin";
+import { memberFormValueType, taskFormValueType } from "<store>/utils/types/admin";
 
 export const addTask = (values: taskFormValueType) => {
   const errors: taskFormValueType = {};

@@ -1,7 +1,7 @@
 "use client";
 
-import { memberFormValueType } from "<store>/types/admin";
 import { useStore } from "<store>/utils/store";
+import { memberFormValueType } from "<store>/utils/types/admin";
 import { Table } from "@chakra-ui/react";
 import { useEffect } from "react";
 

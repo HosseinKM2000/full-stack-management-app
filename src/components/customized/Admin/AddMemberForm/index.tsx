@@ -1,6 +1,6 @@
 "use client";
-import { memberFormValueType } from "<store>/types/admin";
-import { setSubmittingType } from "<store>/types/global";
+import { memberFormValueType } from "<store>/utils/types/admin";
+import { setSubmittingType } from "<store>/utils/types/global";
 import { addMember } from "<store>/utils/validation/admin";
 import { Button, Input, Stack, StatLabel, StatRoot } from "@chakra-ui/react";
 import { Formik } from "formik";
