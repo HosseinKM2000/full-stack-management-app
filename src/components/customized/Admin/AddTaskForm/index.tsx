@@ -30,28 +30,28 @@ const AddTaskForm = () => {
 
   // Fetch members on component mount
   useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await fetch("/api/members");
-        if (!response.ok) {
-          throw new Error("Failed to fetch members");
-        }
-        const data = await response.json();
-        const formattedMembers = data.map((member: memberFormValueType) => ({
-          label: member.userName,
-          value: member.id,
-        }));
-        setMembers(formattedMembers);
-      } catch (error) {
-        console.error("Error fetching members:", error);
-        setMembers([]); // Fallback to an empty list in case of error
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchMembers();
   }, []);
+
+  const fetchMembers = async () => {
+    try {
+      const response = await fetch("/api/members");
+      if (!response.ok) {
+        throw new Error("Failed to fetch members");
+      }
+      const data = await response.json();
+      const formattedMembers = data.map((member: memberFormValueType) => ({
+        label: member.userName,
+        value: member.id,
+      }));
+      setMembers(formattedMembers);
+    } catch (error) {
+      console.error("Error fetching members:", error);
+      setMembers([]); // Fallback to an empty list in case of error
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const memberCollection = createListCollection({
     items: members,
