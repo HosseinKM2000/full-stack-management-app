@@ -23,3 +23,11 @@ export const addMember = (values: memberFormValueType) => {
   }
   return errors;
 };
+
+export const searchMember = (values: { text: string }) => {
+  const errors: { text?: string } = {};
+  if (values.text.length === 0) {
+    errors.text = "Please enter anything to search !";
+  }
+  return errors;
+};

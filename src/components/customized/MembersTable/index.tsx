@@ -1,7 +1,19 @@
+"use client";
+
 import { memberFormValueType } from "<store>/types/admin";
+import { useStore } from "<store>/utils/store";
 import { Table } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 const MembersTable = ({ items }: { items: memberFormValueType[] }) => {
+  const updateMembers = useStore((state) => state.updateMembers);
+  const members = useStore((state) => state.members);
+
+  useEffect(() => {
+    // Update the members state using updateMembers
+    updateMembers(items);
+  }, [items]);
+
   return (
     <Table.Root size="lg" variant="outline">
       <Table.ColumnGroup>
@@ -18,7 +30,7 @@ const MembersTable = ({ items }: { items: memberFormValueType[] }) => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {items.map((item) => (
+        {members.map((item) => (
           <Table.Row key={item.id}>
             <Table.Cell padding={"4"}>{item.id}</Table.Cell>
             <Table.Cell padding={"1"}>{item.userName}</Table.Cell>
