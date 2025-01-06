@@ -3,7 +3,7 @@ class Member {
 
   async getMembers() {
     try {
-      const response = await fetch("http://localhost:3000/api/members");
+      const response = await fetch(`${process.env.API_URL}/members`);
       const result = await response.json();
       return result;
     } catch (error) {
