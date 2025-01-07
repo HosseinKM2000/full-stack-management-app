@@ -2,14 +2,14 @@
 import { Button } from "<store>/components/ui/button";
 import { Field } from "<store>/components/ui/field";
 import Auth from "<store>/utils/services/auth";
-import { RegisterType } from "<store>/utils/types/auth";
+import { LoginType } from "<store>/utils/types/auth";
 import { setSubmittingType } from "<store>/utils/types/global";
-import { registerValidation } from "<store>/utils/validation/auth";
+import { loginValidation } from "<store>/utils/validation/auth";
 import { Input, Stack } from "@chakra-ui/react";
 import { Formik } from "formik";
 
 const onSubmit = async (
-  values: Partial<RegisterType>,
+  values: LoginType,
   { setSubmitting }: { setSubmitting: setSubmittingType }
 ) => {
   setTimeout(() => {
@@ -18,11 +18,15 @@ const onSubmit = async (
   console.log(values);
 
   const auth = new Auth(values);
-  auth.signup().then((response) => {
+  auth.signin().then((response) => {
     if (response) {
-      console.log("Signup successful:", response);
+      if (response.status && response.status === 201) {
+        window.location.href = "http://localhost:3000/";
+      } else {
+        alert(response);
+      }
     } else {
-      console.log("Signup failed.");
+      console.log(response);
     }
   });
 };
@@ -30,8 +34,8 @@ const onSubmit = async (
 const Register = () => {
   return (
     <Formik
-      initialValues={{ userName: "", email: "", password: "" }}
-      validate={registerValidation}
+      initialValues={{ email: "", password: "" }}
+      validate={loginValidation}
       onSubmit={onSubmit}
     >
       {({
@@ -50,18 +54,6 @@ const Register = () => {
             maxW="sm"
             css={{ "--field-label-width": "96px" }}
           >
-            {errors.userName && touched.userName && errors.userName}
-            <Field orientation="horizontal" label="User Name">
-              <Input
-                size={"lg"}
-                p={"2"}
-                placeholder="username"
-                flex="1"
-                name="userName"
-                value={values.userName}
-                onChange={handleChange}
-              />
-            </Field>
             {errors.email && touched.email && errors.email}
             <Field orientation="horizontal" label="Email">
               <Input
@@ -87,7 +79,7 @@ const Register = () => {
               />
             </Field>
             <Button variant="outline" type="submit" disabled={isSubmitting}>
-              Send
+              Sign in
             </Button>
           </Stack>
         </form>

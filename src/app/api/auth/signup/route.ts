@@ -9,7 +9,6 @@ export async function POST(request: NextRequest) {
   try {
    
     const data: RegisterType = await request.json();
-    console.log(data)
     const user = await prisma.member.findFirst({
       where: {
         email: data.email,
