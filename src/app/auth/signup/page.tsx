@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "<store>/components/ui/button";
 import { Field } from "<store>/components/ui/field";
+import Auth from "<store>/utils/services/auth";
 import { RegisterType } from "<store>/utils/types/auth";
 import { setSubmittingType } from "<store>/utils/types/global";
 import { registerValidation } from "<store>/utils/validation/auth";
@@ -14,14 +15,16 @@ const onSubmit = async (
   setTimeout(() => {
     setSubmitting(false);
   }, 1000);
-  console.log(values)
-//   try {
-//     const response = await fetch(``);
-//     const result = await response.json();
-//     console.log(result);
-//   } catch (error) {
-//     console.log(error);
-//   }
+  console.log(values);
+
+  const auth = new Auth(values);
+  auth.signup().then((response) => {
+    if (response) {
+      console.log("Signup successful:", response);
+    } else {
+      console.log("Signup failed.");
+    }
+  });
 };
 
 const Register = () => {
